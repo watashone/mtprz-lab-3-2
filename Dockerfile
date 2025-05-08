@@ -1,4 +1,5 @@
-FROM golang:1.21
+# Етап збірки
+FROM golang:1.21 AS builder
 
 WORKDIR /app
 COPY . .
@@ -6,4 +7,9 @@ COPY . .
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main .
 
-CMD ["/app/main"]
+# Фінальний етап
+FROM scratch
+
+COPY --from=builder /app/main /main
+
+CMD ["/main"]
