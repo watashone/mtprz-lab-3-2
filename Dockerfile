@@ -8,7 +8,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main .
 
 # Фінальний етап
-FROM scratch
+FROM gcr.io/distroless/static-debian12
 
 COPY --from=builder /app/main /main
 
